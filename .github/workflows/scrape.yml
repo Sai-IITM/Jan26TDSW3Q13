@@ -1,0 +1,24 @@
+name: Scrape Table Sums
+
+on: [push]  # Runs on every push; change to [workflow_dispatch] for manual trigger
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Scrape and sum tables (23f2004847@ds.study.iitm.ac.in)
+        run: node scraper.js
